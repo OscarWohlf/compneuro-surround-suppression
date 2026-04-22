@@ -21,7 +21,7 @@ def oscillating_input(I_0, omega, t):
 def delta_u(tau_m, curr_potentials, R, I):
     return (- curr_potentials + R * I) / tau_m
 
-def membrane_evolution(init_potentials):
+def membrane_evolution_ex01(init_potentials):
     n_steps = int(T / delta_t)
     potentials = np.zeros((n_steps + 1, N))
     spikes = np.zeros((n_steps, N))
@@ -83,7 +83,7 @@ def mean_firing_rate(spikes):
 
 def main():
     neurons = init_neurons(N, u_reset, theta)
-    potentials, spikes = membrane_evolution(neurons)
+    potentials, spikes = membrane_evolution_ex01(neurons)
     rasterplot(spikes, delta_t)
     mean_firing_rate(spikes)
 
