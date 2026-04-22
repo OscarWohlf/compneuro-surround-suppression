@@ -1,7 +1,5 @@
 import numpy as np
-import math 
 import matplotlib.pyplot as plt 
-import scipy 
 
 theta = 20
 u_reset = -10
@@ -67,7 +65,7 @@ def mean_firing_rate(spikes):
     mean_rate = spike_counts / N 
     times = np.arange(0,T,delta_t)
     input_current = oscillating_input(I_0, omega, times)
-    
+
     fig, axes = plt.subplots(1, 2, figsize=(12, 5))
 
     axes[0].plot(times, mean_rate)
