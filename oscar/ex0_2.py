@@ -48,6 +48,17 @@ def avg_mean_firing(spikes):
     avg_mean_rate = avg_mean_counts / 0.0005 # divide to make it a rate in Hz
     return avg_mean_rate
 
+def theoretical_f_I_curve(I_0_vals):
+    theory_rates = np.zeros(len(I_0_vals))
+
+    for idx, I_0 in enumerate(I_0_vals):
+        if R * I_0 <= theta:
+            theory_rates[idx] = 0
+        else:
+            theory_rates[idx] = 1000 / (tau_m * np.log((R * I_0 - u_reset) / (R * I_0 - (theta))))
+
+    return theory_rates
+
 def main():
     I_0_range = np.arange(-10,51,5)
     mean_f_rates = np.zeros(len(I_0_range))
@@ -58,11 +69,15 @@ def main():
         avg_rates = avg_mean_firing(spikes)
         mean_f_rates[idx] = avg_rates
 
+    theory_rates = theoretical_f_I_curve(I_0_range)
+
     plt.figure(figsize=(10, 6))
-    plt.plot(I_0_range, mean_f_rates, marker="o")
+    plt.plot(I_0_range, mean_f_rates, label="Simulated with background noise")
+    plt.plot(I_0_range, theory_rates,label="Theoretical noiseless LIF")
     plt.xlabel("External current I_0 (nA)")
     plt.ylabel("Mean firing rate (Hz)")
     plt.title("f-I curve")
+    plt.legend()
     plt.show()
     
 
