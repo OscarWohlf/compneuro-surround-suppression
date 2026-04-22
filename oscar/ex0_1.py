@@ -18,7 +18,7 @@ def init_neurons(N, u_reset, theta):
     return neurons
 
 def oscillating_input(I_0, omega, t):
-    return I_0 * (1 + math.sin(omega * t / 1000))
+    return I_0 * (1 + np.sin(omega * t / 1000))
 
 def delta_u(tau_m, curr_potentials, R, I):
     return (- curr_potentials + R * I) / tau_m
@@ -51,9 +51,43 @@ def membrane_evolution(init_potentials):
 
     return potentials, spikes
 
+def rasterplot(spikes, delta_t):
+    spike_times, neuron_ids = np.where(spikes > 0)
+    times_ms = spike_times * delta_t
+
+    plt.figure(figsize=(10, 6))
+    plt.scatter(times_ms, neuron_ids, s=5)
+    plt.xlabel("Time (ms)")
+    plt.ylabel("Neuron ID")
+    plt.title("Raster plot of spike times")
+    plt.show()
+
+def mean_firing_rate(spikes):
+    spike_counts = np.sum(spikes > 0, axis=1)
+    mean_rate = spike_counts / N 
+    times = np.arange(0,T,delta_t)
+    input_current = oscillating_input(I_0, omega, times)
+    
+    fig, axes = plt.subplots(1, 2, figsize=(12, 5))
+
+    axes[0].plot(times, mean_rate)
+    axes[0].set_xlabel("Time (ms)")
+    axes[0].set_ylabel("Mean firing activity")
+    axes[0].set_title("Mean firing rate")
+
+    axes[1].plot(times, input_current)
+    axes[1].set_xlabel("Time (ms)")
+    axes[1].set_ylabel("Input current")
+    axes[1].set_title("External input")
+
+    plt.tight_layout()
+    plt.show()
+
 def main():
     neurons = init_neurons(N, u_reset, theta)
     potentials, spikes = membrane_evolution(neurons)
+    rasterplot(spikes, delta_t)
+    mean_firing_rate(spikes)
 
 
 
