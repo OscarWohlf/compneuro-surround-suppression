@@ -4,15 +4,15 @@ from tqdm import tqdm
 n_bg = 25
 T = 100
 
-def background_current(n_bg):
+def background_current(n_bg, N):
     background_input = np.random.poisson(n_bg, N)
     return background_input
 
-def total_input_currents(I_0, n_bg):
-    background = background_current(n_bg)
+def total_input_currents(I_0, n_bg, N):
+    background = background_current(n_bg, N)
     return background + I_0
 
-def membrane_evolution_ex_02(init_potentials, I_0):
+def membrane_evolution_ex_02(init_potentials, I_0, N):
     n_steps = int(T / delta_t)
     potentials = np.zeros((n_steps + 1, N))
     spikes = np.zeros((n_steps, N))
@@ -23,7 +23,7 @@ def membrane_evolution_ex_02(init_potentials, I_0):
     curr_step = 0
 
     while curr_t < T:
-        I = total_input_currents(I_0, n_bg)
+        I = total_input_currents(I_0, n_bg, N)
         d_u = delta_u(tau_m, curr_potentials, R, I)
 
         next_potentials = curr_potentials + delta_t * d_u
@@ -40,7 +40,7 @@ def membrane_evolution_ex_02(init_potentials, I_0):
 
     return potentials, spikes
 
-def avg_mean_firing(spikes):
+def avg_mean_firing(spikes, N):
     spike_counts = np.sum(spikes > 0, axis=1)
     mean_counts = spike_counts / N 
     n_last_steps = int(50 / delta_t)
@@ -65,8 +65,8 @@ def main():
 
     for idx, I_0 in enumerate(tqdm(I_0_range)):
         neurons = init_neurons(N, u_reset, theta)
-        potentials, spikes = membrane_evolution_ex_02(neurons, I_0)
-        avg_rates = avg_mean_firing(spikes)
+        potentials, spikes = membrane_evolution_ex_02(neurons, I_0, N)
+        avg_rates = avg_mean_firing(spikes, N)
         mean_f_rates[idx] = avg_rates
 
     theory_rates = theoretical_f_I_curve(I_0_range)
