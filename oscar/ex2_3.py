@@ -16,7 +16,7 @@ def generate_unit_connectivity(Nunits, sigma, W0, g, gamma):
                 continue 
             dist = calc_dist(curr_loc, new_loc)
 
-            f = int(dist <= sigma) 
+            f = int(dist <= (sigma + 1e-12))
 
             W[i,j] = W0 * f 
             W[i + Nunits, j] = g * gamma * W0 * (1 - f)
@@ -31,7 +31,6 @@ def main():
     g = 5
     W0 = 90
     W = generate_unit_connectivity(Nunits, sigma, W0, g, gamma)
-    print(W)
 
 if __name__ == "__main__": 
     main()
