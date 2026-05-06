@@ -20,8 +20,6 @@ def total_inputs_ex31(W, r_delayed, curr_t, I_0, stim_unit):
     N = len(r_delayed) // 2
     I_unit = W @ r_delayed
 
-    
-
     I_E_ext = I_unit[:N]
     I_I_ext = I_unit[N:]
 
