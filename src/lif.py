@@ -1,11 +1,13 @@
 import numpy as np
 
-THETA = 20.0
-U_RESET = -10.0
-DT = 0.5
-TAU_M = 20.0
-R = 1.0
-N_BG = 25.0
+from .parameters import (
+    THETA,
+    U_RESET,
+    DT,
+    TAU_M,
+    R,  
+    N_BG,
+)
 
 def init_neurons(N, u_reset=U_RESET, theta=THETA, rng=None):
     if rng is None:

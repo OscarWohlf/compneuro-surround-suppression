@@ -91,7 +91,6 @@ class E_I_unit:
         return r_E, r_I
 
 def delayed_activity(r_history, curr_step, tau_delay, delta_t):
-    N = r_history.shape[1]
     delay_steps = int(tau_delay / delta_t)
     if curr_step >= delay_steps:
         return r_history[curr_step - delay_steps]

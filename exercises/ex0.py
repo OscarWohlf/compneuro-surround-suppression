@@ -1,17 +1,27 @@
-import os
+from pathlib import Path
+import sys
+
+PROJECT_ROOT = Path(__file__).resolve().parents[1]
+
+if str(PROJECT_ROOT) not in sys.path:
+    sys.path.insert(0, str(PROJECT_ROOT))
+
 import numpy as np
 import matplotlib.pyplot as plt
 from tqdm import tqdm
 
 from src.lif import (
-    DT,
-    N_BG,
     init_neurons,
     oscillating_input,
     simulate_lif_population,
     population_rate_hz,
     mean_rate_last_window,
     theoretical_lif_rate,
+)
+
+from src.parameters import (
+    DT,
+    N_BG,
 )
 
 from src.plotting import (
